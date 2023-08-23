@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import LandingIntro from './LandingIntro'
 import ErrorText from  '../../components/Typography/ErrorText'
 import InputText from '../../components/Input/InputText'
+import axios from 'axios'
 
 function Login(){
 
@@ -15,6 +16,11 @@ function Login(){
     const [errorMessage, setErrorMessage] = useState("")
     const [loginObj, setLoginObj] = useState(INITIAL_LOGIN_OBJ)
 
+    console.log("🚀😍 ------------------------------------------------------🚀😍");
+    console.log("🚀😍 ~ file: Login.js:18 ~ Login ~ loginObj:", loginObj);
+    console.log("🚀😍 ------------------------------------------------------🚀😍");
+
+
     const submitForm = (e) =>{
         e.preventDefault()
         setErrorMessage("")
@@ -22,11 +28,43 @@ function Login(){
         if(loginObj.emailId.trim() === "")return setErrorMessage("Email Id is required! (use any value)")
         if(loginObj.password.trim() === "")return setErrorMessage("Password is required! (use any value)")
         else{
-            setLoading(true)
+            setLoading(true);
             // Call API to check user credentials and save token in localstorage
-            localStorage.setItem("token", "DumyTokenHere")
-            setLoading(false)
-            window.location.href = '/app/welcome'
+            /* The line `axios.post(loginObj)` is making a POST request to an API endpoint with the
+            `loginObj` as the request body. It is sending the user's login credentials (email and
+            password) to the server for authentication. */
+
+           try {
+            axios.post('http://localhost:8080/api/users/admin', loginObj).then( res => {
+                setLoading(false);
+                if(res){
+                    localStorage.setItem("token", "DumyTokenHere")
+                    setLoading(false)
+                    window.location.href = '/app/welcome'
+                } else {
+                    localStorage.setItem("token", "")
+                    setLoading(false)
+                    window.location.href = '/login'
+                }
+            }).catch(error => {
+
+                console.log("🚀😍 -----------------------------------------------------🚀😍");
+                console.log("🚀😍 ~ file: Login.js:50 ~ axios.post ~ error:", error);
+                console.log("🚀😍 -----------------------------------------------------🚀😍");
+
+                
+                localStorage.setItem("token", "")
+                setLoading(false)
+                window.location.href = '/login'
+            })
+           } catch (error) {
+
+            console.log("🚀😍 -----------------------------------------------------🚀😍");
+            console.log("🚀😍 ~ file: Login.js:62 ~ submitForm ~ error:", error);
+            console.log("🚀😍 -----------------------------------------------------🚀😍");
+
+            
+           }
         }
     }
 

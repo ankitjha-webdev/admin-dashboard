@@ -12,7 +12,10 @@ function InternalPage(){
 
 
     return(
-        <Dashboard />
+        <>
+         {/* <Dashboard /> */}
+        <h1 className='text-3xl text-blue-700'>Dashboard </h1>
+        </>
     )
 }
 
