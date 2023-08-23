@@ -44,7 +44,7 @@ function Login(){
                 } else {
                     localStorage.setItem("token", "")
                     setLoading(false)
-                    window.location.href = '/login'
+                    setErrorMessage('Something went wrong, please contact to the Admin');
                 }
             }).catch(error => {
 
@@ -55,7 +55,7 @@ function Login(){
                 
                 localStorage.setItem("token", "")
                 setLoading(false)
-                window.location.href = '/login'
+                setErrorMessage('Something went wrong, please contact to the Admin');
             })
            } catch (error) {
 
